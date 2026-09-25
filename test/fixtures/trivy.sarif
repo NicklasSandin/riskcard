@@ -1,0 +1,138 @@
+{
+  "$schema": "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json",
+  "version": "2.1.0",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "Trivy",
+          "informationUri": "https://github.com/aquasecurity/trivy",
+          "version": "0.53.0",
+          "rules": [
+            {
+              "id": "CVE-2023-12345",
+              "name": "OpenSslMemoryCorruption",
+              "shortDescription": { "text": "CVE-2023-12345: openssl memory corruption" },
+              "fullDescription": { "text": "A memory corruption vulnerability in openssl that could allow remote code execution." },
+              "help": { "text": "Upgrade openssl to 1.1.1n or later.", "markdown": "Upgrade `openssl` to `1.1.1n` or later." },
+              "properties": {
+                "tags": ["vulnerability", "security", "CRITICAL"],
+                "precision": "very-high"
+              }
+            },
+            {
+              "id": "AVD-AWS-0089",
+              "name": "HardcodedAwsAccessKey",
+              "shortDescription": { "text": "Hardcoded AWS access key detected" },
+              "fullDescription": { "text": "An AWS access key is hardcoded in a Terraform state or config file." },
+              "help": { "text": "Remove the hardcoded credential and rotate the key immediately.", "markdown": "Remove the hardcoded credential and rotate the key immediately." },
+              "properties": {
+                "tags": ["misconfiguration", "security", "CRITICAL", "cwe-798"],
+                "precision": "very-high"
+              }
+            },
+            {
+              "id": "CVE-2022-55555",
+              "name": "Libxml2UseAfterFree",
+              "shortDescription": { "text": "CVE-2022-55555: libxml2 use-after-free" },
+              "fullDescription": { "text": "A use-after-free vulnerability in libxml2 XML parsing." },
+              "help": { "text": "Upgrade libxml2 to 2.9.14 or later.", "markdown": "Upgrade `libxml2` to `2.9.14` or later." },
+              "properties": {
+                "tags": ["vulnerability", "security"],
+                "precision": "high"
+              }
+            },
+            {
+              "id": "CVE-2021-33333",
+              "name": "FooPkgModerateIssue",
+              "shortDescription": { "text": "CVE-2021-33333: foo-pkg moderate issue" },
+              "fullDescription": { "text": "A moderate-impact issue in foo-pkg." },
+              "help": { "text": "Upgrade foo-pkg to 1.2 or later.", "markdown": "Upgrade `foo-pkg` to `1.2` or later." },
+              "properties": {
+                "tags": ["vulnerability", "security"],
+                "precision": "high"
+              }
+            }
+          ]
+        }
+      },
+      "results": [
+        {
+          "ruleId": "CVE-2023-12345",
+          "ruleIndex": 0,
+          "level": "error",
+          "message": {
+            "text": "Package: openssl\nInstalled Version: 1.1.1k\nVulnerability CVE-2023-12345\nSeverity: LOW\nFixed Version: 1.1.1n\nLink: https://avd.aquasec.com/nvd/cve-2023-12345"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": { "uri": "app/package-lock.json" }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "AVD-AWS-0089",
+          "ruleIndex": 1,
+          "level": "error",
+          "message": {
+            "text": "Hardcoded AWS access key detected in terraform state file. Severity: CRITICAL"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": { "uri": "infra/terraform.tfstate" },
+                "region": { "startLine": 17 }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CVE-2022-55555",
+          "ruleIndex": 2,
+          "level": "warning",
+          "message": {
+            "text": "Package: libxml2\nInstalled Version: 2.9.10\nVulnerability CVE-2022-55555\nSeverity: HIGH\nFixed Version: 2.9.14\nLink: https://avd.aquasec.com/nvd/cve-2022-55555"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": { "uri": "app/package-lock.json" }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CVE-2021-33333",
+          "ruleIndex": 3,
+          "level": "warning",
+          "message": {
+            "text": "Package: foo-pkg\nInstalled Version: 1.0.0\nVulnerability CVE-2021-33333\nFixed Version: 1.2.0\nLink: https://avd.aquasec.com/nvd/cve-2021-33333"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": { "uri": "app/package-lock.json" }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CVE-9999-UNKNOWN",
+          "level": "error",
+          "message": {
+            "text": "Package: bar-pkg\nInstalled Version: 0.1.0\nVulnerability CVE-9999-UNKNOWN\nFixed Version: 0.2.0\nLink: https://avd.aquasec.com/nvd/cve-9999-unknown"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": { "uri": "app/package-lock.json" }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

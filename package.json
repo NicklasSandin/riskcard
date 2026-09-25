@@ -1,0 +1,39 @@
+{
+  "name": "riskcard",
+  "version": "0.1.0",
+  "description": "Zero-dependency CLI + GitHub Action that ingests SARIF 2.1.0 output (Trivy, Semgrep, CodeQL, Grype, etc.) and emits a FAIR-style dollar-range loss estimate and letter grade. Automated, unaudited estimate -- not a substitute for a professional risk assessment.",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "riskcard": "./bin/riskcard.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.js"
+  },
+  "files": [
+    "bin",
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
+  "dependencies": {},
+  "keywords": [
+    "sarif",
+    "security",
+    "fair",
+    "risk-quantification",
+    "trivy",
+    "semgrep",
+    "codeql",
+    "grype",
+    "github-action",
+    "cli"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NicklasSandin/riskcard.git"
+  }
+}

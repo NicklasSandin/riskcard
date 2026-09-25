@@ -1,0 +1,133 @@
+{
+  "$schema": "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json",
+  "version": "2.1.0",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "CodeQL",
+          "informationUri": "https://codeql.github.com",
+          "version": "2.18.4",
+          "rules": [
+            {
+              "id": "py/hardcoded-credentials",
+              "name": "py/hardcoded-credentials",
+              "shortDescription": { "text": "Hardcoded credentials" },
+              "fullDescription": { "text": "Using a hardcoded credential in an authentication mechanism may allow an attacker to bypass authentication." },
+              "help": { "text": "Store credentials in a secrets manager or environment variable, not in source.", "markdown": "Store credentials in a secrets manager or environment variable, not in source." },
+              "defaultConfiguration": { "level": "error" },
+              "properties": {
+                "tags": ["security", "external/cwe/cwe-798", "external/cwe/cwe-259"],
+                "security-severity": "9.8",
+                "problem.severity": "error"
+              }
+            },
+            {
+              "id": "js/sql-injection",
+              "name": "js/sql-injection",
+              "shortDescription": { "text": "Database query built from user-controlled sources" },
+              "fullDescription": { "text": "Building a SQL query from user-controlled input without escaping or parameterization risks SQL injection." },
+              "help": { "text": "Use parameterized queries.", "markdown": "Use parameterized queries." },
+              "defaultConfiguration": { "level": "error" },
+              "properties": {
+                "tags": ["security", "external/cwe/cwe-89"],
+                "security-severity": "8.5",
+                "problem.severity": "error"
+              }
+            },
+            {
+              "id": "js/useless-assignment-to-local",
+              "name": "js/useless-assignment-to-local",
+              "shortDescription": { "text": "Useless assignment to local variable" },
+              "fullDescription": { "text": "The value assigned to this local variable is never read." },
+              "help": { "text": "Remove the dead assignment.", "markdown": "Remove the dead assignment." },
+              "defaultConfiguration": { "level": "note" },
+              "properties": {
+                "tags": ["maintainability"],
+                "problem.severity": "recommendation"
+              }
+            },
+            {
+              "id": "cpp/unused-variable",
+              "name": "cpp/unused-variable",
+              "shortDescription": { "text": "Unused variable" },
+              "fullDescription": { "text": "This variable is declared but never used." },
+              "help": { "text": "Remove the unused variable.", "markdown": "Remove the unused variable." },
+              "defaultConfiguration": { "level": "none" },
+              "properties": {
+                "tags": ["maintainability"],
+                "problem.severity": "recommendation"
+              }
+            }
+          ]
+        }
+      },
+      "results": [
+        {
+          "ruleId": "py/hardcoded-credentials",
+          "ruleIndex": 0,
+          "level": "error",
+          "message": {
+            "text": "This hardcoded credential is used in an authentication mechanism, potentially exposing it to attackers who can read the source."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": { "uri": "src/auth/config.py" },
+                "region": { "startLine": 42, "startColumn": 1, "endColumn": 30 }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "js/sql-injection",
+          "ruleIndex": 1,
+          "level": "error",
+          "message": {
+            "text": "This query string depends on a user-provided value, which may allow SQL injection."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": { "uri": "src/api/db.js" },
+                "region": { "startLine": 118 }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "js/useless-assignment-to-local",
+          "ruleIndex": 2,
+          "level": "note",
+          "message": {
+            "text": "This assignment to 'result' is never read."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": { "uri": "src/utils/parse.js" },
+                "region": { "startLine": 9 }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "cpp/unused-variable",
+          "ruleIndex": 3,
+          "level": "none",
+          "message": {
+            "text": "Variable 'tmp' is never used."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": { "uri": "src/native/buffer.cpp" },
+                "region": { "startLine": 77 }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

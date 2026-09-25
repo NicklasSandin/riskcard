@@ -1,0 +1,72 @@
+name: "riskcard"
+description: >-
+  FAIR-style dollar-range loss estimate and letter grade from SARIF 2.1.0
+  scan output (Trivy, Semgrep, CodeQL, Grype). Automated, unaudited estimate
+  -- not a substitute for a professional risk assessment. By default this
+  action only writes to the job summary; it never posts a PR comment unless
+  you explicitly opt in.
+author: "riskcard"
+branding:
+  icon: "shield"
+  color: "orange"
+
+inputs:
+  sarif-file:
+    description: >-
+      Path to the SARIF 2.1.0 file to analyze -- typically the output file
+      of a preceding Trivy/Semgrep/CodeQL/Grype scan step in the same job.
+      Required.
+    required: true
+  config-file:
+    description: >-
+      Optional path to a local JSON config file
+      ({ "recordsAtRisk": N, "industry": "...", "costPerRecord": {low,expected,high} })
+      that improves the loss estimate with org-specific numbers. Without
+      it, the loss range falls back to a small, clearly-labeled placeholder
+      record count -- the report says so explicitly either way.
+    required: false
+    default: ""
+  format:
+    description: >-
+      Report format written to the job summary (and to the PR comment, if
+      post-pr-comment is enabled): "md" or "json". "json" is rendered
+      inside a fenced code block so it stays readable in the summary UI.
+      Default: "md".
+    required: false
+    default: "md"
+  post-pr-comment:
+    description: >-
+      OPT-IN ONLY, default "false". When "false" (the default), riskcard
+      writes the report to the GitHub Actions job summary
+      ($GITHUB_STEP_SUMMARY) and nowhere else -- no comment is posted on
+      any pull request. Set this to "true" to additionally post (or
+      update) the full report as a comment on the triggering pull request.
+      This is a deliberate off-by-default choice: an unreviewed dollar
+      figure should never become a visible PR comment without someone
+      turning this on on purpose. Requires github-token when set to "true".
+    required: false
+    default: "false"
+  github-token:
+    description: >-
+      GitHub token used only to post the PR comment when post-pr-comment is
+      "true" (typically ${{ secrets.GITHUB_TOKEN }}, with `pull-requests:
+      write` permission granted to the job). Not used and not required when
+      post-pr-comment is "false" (the default).
+    required: false
+    default: ""
+
+outputs:
+  risk-score:
+    description: "Composite risk score, 0-100."
+  grade:
+    description: "Letter grade, A-F."
+  loss-low:
+    description: "Low end of the estimated annualized loss exposure range, in USD."
+  loss-high:
+    description: "High end of the estimated annualized loss exposure range, in USD."
+  loss-expected:
+    description: "Expected-case estimated annualized loss exposure, in USD."
+
+runs:
+  using: "node20"
+  main: "bin/action.js"

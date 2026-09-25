@@ -1,0 +1,100 @@
+{
+  "$schema": "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json",
+  "version": "2.1.0",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "Semgrep OSS",
+          "informationUri": "https://semgrep.dev",
+          "version": "1.78.0",
+          "rules": [
+            {
+              "id": "python.lang.security.audit.hardcoded-aws-key.hardcoded-aws-key",
+              "name": "hardcoded-aws-key",
+              "shortDescription": { "text": "Hardcoded AWS access key" },
+              "fullDescription": { "text": "An AWS access key ID appears to be hardcoded in source. This should be moved to a secrets manager or environment variable and rotated." },
+              "help": { "text": "Move this credential out of source control and rotate it.", "markdown": "Move this credential out of source control and rotate it." },
+              "defaultConfiguration": { "level": "warning" },
+              "properties": {
+                "tags": ["security", "external/cwe/cwe-798", "external/owasp/owasp-a3", "secrets"],
+                "security-severity": "9.8"
+              }
+            },
+            {
+              "id": "javascript.express.security.audit.express-sqli-taint.express-sqli-taint",
+              "name": "express-sqli-taint",
+              "shortDescription": { "text": "Possible SQL injection" },
+              "fullDescription": { "text": "User input flows into a SQL query string without parameterization or sanitization." },
+              "help": { "text": "Use parameterized queries instead of string concatenation.", "markdown": "Use parameterized queries instead of string concatenation." },
+              "defaultConfiguration": { "level": "error" },
+              "properties": {
+                "tags": ["security", "external/cwe/cwe-89", "external/owasp/owasp-a1", "sql-injection"]
+              }
+            },
+            {
+              "id": "javascript.lang.security.detect-eval-with-expression.detect-eval-with-expression",
+              "name": "detect-eval-with-expression",
+              "shortDescription": { "text": "Detected eval with a non-literal argument" },
+              "fullDescription": { "text": "Calling eval() with a non-literal, potentially user-influenced argument can lead to arbitrary code execution if the argument is attacker-controlled." },
+              "help": { "text": "Avoid eval() with dynamic input; use a safer parsing approach.", "markdown": "Avoid `eval()` with dynamic input; use a safer parsing approach." },
+              "defaultConfiguration": { "level": "warning" },
+              "properties": {
+                "tags": ["security", "external/cwe/cwe-95"]
+              }
+            }
+          ]
+        }
+      },
+      "results": [
+        {
+          "ruleId": "python.lang.security.audit.hardcoded-aws-key.hardcoded-aws-key",
+          "ruleIndex": 0,
+          "level": "warning",
+          "message": {
+            "text": "Hardcoded AWS credential found in source. This key should be rotated and removed from version control immediately."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": { "uri": "app/config/settings.py" },
+                "region": { "startLine": 8, "startColumn": 5 }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "javascript.express.security.audit.express-sqli-taint.express-sqli-taint",
+          "ruleIndex": 1,
+          "level": "error",
+          "message": {
+            "text": "Detected user input flowing into a SQL query without sanitization, possible SQL injection."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": { "uri": "app/routes/users.js" },
+                "region": { "startLine": 42, "startColumn": 12 }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "javascript.lang.security.detect-eval-with-expression.detect-eval-with-expression",
+          "ruleIndex": 2,
+          "message": {
+            "text": "Detected eval used with a non-literal argument. This could lead to arbitrary code execution if the argument is attacker-controlled."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": { "uri": "app/lib/template.js" },
+                "region": { "startLine": 15 }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
