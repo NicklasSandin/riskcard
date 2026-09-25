@@ -147,8 +147,6 @@ deck before anyone's had a chance to sanity-check it. Making that step
 opt-in keeps the default path safe without taking the feature away from
 teams who want it.
 
-<!-- TODO: replace <PIN_COMMIT_SHA> with the actual first-commit SHA after initial push -->
-
 ```yaml
 name: risk-check
 on: [pull_request]
@@ -164,7 +162,7 @@ jobs:
 
       # ...your Trivy/Semgrep/CodeQL/Grype step here, producing results.sarif...
 
-      - uses: NicklasSandin/riskcard@<PIN_COMMIT_SHA>
+      - uses: NicklasSandin/riskcard@928706fc36d7acc96f24ca616dce9191d8e39689
         with:
           sarif-file: results.sarif
           # config-file: risk-config.json   # optional, see Options above
@@ -212,7 +210,7 @@ permissions:
 steps:
   - uses: actions/checkout@v4
   # ...scan step...
-  - uses: NicklasSandin/riskcard@<PIN_COMMIT_SHA>
+  - uses: NicklasSandin/riskcard@928706fc36d7acc96f24ca616dce9191d8e39689
     with:
       sarif-file: results.sarif
       post-pr-comment: 'true'
